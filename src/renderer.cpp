@@ -1,19 +1,37 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include <GL/glut.h>
+#include <bits/stdc++.h>
 #include "../include/variables.h"
 #include "../include/vec3f.h"
 #include "../include/renderer.h"
 #include "../include/terrain.h"
+#include "../include/lake.h"
 #include "../include/imageloader.h"
-#include "../include/helper_functions.h"
+#include "../include/utils.h"
 #include "../include/objects.h"
 
 extern Terrain* _terrain;
+extern Lake* _lake;
 float limit=89.0*M_PI/180.0f;
 float yview = zNear*FSCALE*tan(fov/2*M_PI/180.0);
 
 float gtx=0.0,gty=0.0,gtz=0.0;
+
+void lakePoint(int x, int y, float z) {
+	// get color here from reflection, apply alpha like this
+	if(_lake->is_outside(x, z)) {
+		glColor4f(0.0f,0.0f,1.0f,0.0f);
+	}
+	else {
+		glColor4f(0.0f,0.0f,1.0f,0.5f);
+	}
+	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  _lake->get_height(x, z)), FSCALE * (Z_OFF +  z));
+}
+
+void timer(int value) {
+	_lake->update();
+}
 
 void lighting() {
 	GLfloat ambientColor[] = {0.4f, 0.4f, 0.4f, 1.0f};
@@ -247,6 +265,34 @@ void render_terrain(GLuint ground_texture) {
 		}
 		glEnd();
 	}
+	glDisable(GL_TEXTURE_2D);
+}
+
+void render_points_lake(Vec3f normal,int x,int z) {
+	glNormal3f(FSCALE * (X_OFF +  normal[0]), FSCALE * (Y_OFF +  normal[1]), FSCALE * (Z_OFF +  normal[2]));
+	lakePoint(x, _lake->get_height(x, z), z);
+
+	normal = _lake->get_normal(x, z + 1);
+	glNormal3f((X_OFF +  normal[0]), Y_OFF +  normal[1], Z_OFF +  normal[2]);
+	lakePoint(x, _lake->get_height(x, z+1), z+1);
+}
+
+void render_lake() {
+
+	// For Blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	for(int z = 0; z < _lake->length() - 1; z++) {
+		glBegin(GL_TRIANGLE_STRIP);
+		for(int x = 0; x < _lake->width(); x++) {
+			Vec3f normal = _lake->get_normal(x, z);
+			render_points_lake(normal,x,z);
+		}
+		glEnd();
+	}
+
+	glDisable(GL_BLEND);
 }
 
 Vec3f ver[8] = 
@@ -344,10 +390,10 @@ void drawScene(){
 	float scale = 5.0f / max(_terrain->width() - 1, _terrain->length() - 1);
 	glScalef(scale, scale, scale);
 	
-	render_terrain(ground_texture);
-	
 	render_sky();
 
+	render_terrain(ground_texture);
+	render_lake();
 
 	glutSwapBuffers();
 

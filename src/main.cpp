@@ -2,10 +2,12 @@
 #include <GL/glut.h>
 #include  "../include/vec3f.h"
 #include  "../include/terrain.h"
+#include  "../include/lake.h"
 #include  "../include/imageloader.h"
 #include  "../include/renderer.h"
 
 Terrain* _terrain = new Terrain(-25);
+Lake* _lake = new Lake(-26);
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
@@ -17,10 +19,11 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(keyboard);
 	glutSpecialFunc(keyboardSpecial);
-	// glutSetCursor(GLUT_CURSOR_NONE);
-	// glutPassiveMotionFunc(mouse);
+
 	glutMouseFunc(mouse);
     glutMotionFunc(mouseMove);
+	
+	glutTimerFunc(1000,timer,0);
 	glutReshapeFunc(handleResize);
 	
 	glutMainLoop();
