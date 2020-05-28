@@ -31,6 +31,8 @@ void lakePoint(int x, int y, float z) {
 
 void timer(int value) {
 	_lake->update();
+	glutPostRedisplay();
+	glutTimerFunc(50,timer,0);
 }
 
 void lighting() {
@@ -198,6 +200,36 @@ void keyboard(unsigned char key,int x,int y){
 }
 
 void mouse(int button, int state, int mouseX, int mouseY) {
+	if(controlMode) {
+		// Trigger ripple on Mouse Down (Any Mouse button)
+		if(state == GLUT_DOWN) {
+			GLint viewport[4];
+			glGetIntegerv(GL_VIEWPORT, viewport);
+
+			GLdouble modelview[16];
+			glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+
+			GLdouble projection[16];
+			glGetDoublev(GL_PROJECTION_MATRIX, projection);
+
+			GLfloat winX, winY, winZ;
+			winX = mouseX;
+			winY = mouseY;
+			winY = (float)viewport[3] - winY;
+
+			glReadPixels(winX, winY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
+
+			GLdouble posX, posY, posZ;
+			gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+			posX = posX / FSCALE - X_OFF;
+			posY = posY / FSCALE - Y_OFF;
+			posZ = posZ / FSCALE - Z_OFF;
+
+			_lake->addRipple(posX, posZ, 1);
+		}
+		return;
+	}
+
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 		cameraMouseMovement = true;
 		prevMouseX = mouseX;

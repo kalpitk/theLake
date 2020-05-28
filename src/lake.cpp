@@ -30,7 +30,14 @@ Lake::Lake(int height) {
 }
 
 void Lake::update() {
-    computedNormals = false;
+	for(auto it = ripples.begin(); it != ripples.end(); ++it) {
+		if((*it).waveDistance() > 150) {
+			cout<<ripples.size()<<endl;
+			ripples.erase(it++);
+			continue;
+		}
+	}
+
 	loadLake();
 	compute_normals();
 }
@@ -38,7 +45,12 @@ void Lake::update() {
 void Lake::loadLake() {
     for(int y = 0; y < l; y++) {
 		for(int x = 0; x < w; x++) {
-			set_height(x, y, height);
+			float h = height;
+			for(auto ripple: ripples) {
+				h += ripple.getAmp(x, y);
+			}
+			// h = max(-30.f, h);
+			set_height(x, y, h);
 		}
 	}
 }
@@ -50,9 +62,6 @@ Lake::~Lake() {
 }
 
 void Lake::compute_normals() {
-	if (computedNormals) {
-		return;
-	}
 	
 	vector<vector<Vec3f>> normals2 = vector<vector<Vec3f>>(l, vector<Vec3f>(w));
 	
@@ -123,14 +132,9 @@ void Lake::compute_normals() {
 		normals2[i].clear();
 	}
 	normals2.clear();
-	
-	computedNormals = true;
 }
 
 Vec3f Lake::get_normal(int x, int z) {
-	if (!computedNormals) {
-		compute_normals();
-	}
 	return normals[z][x];	
 }
 
@@ -148,9 +152,15 @@ int Lake::length() {
 
 void Lake::set_height(int x, int z, float y) {
 	hs[z][x] = y;
-	computedNormals = false;
 }
 
 float Lake::get_height(int x, int z) {
 	return hs[z][x];	
+}
+
+void Lake::addRipple(float x, float z, float amp) {
+	if(!is_outside(x, z)) {
+		Ripple ripple(x, z, amp);
+		ripples.insert(ripple);
+	}
 }

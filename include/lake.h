@@ -4,6 +4,7 @@
 #include<bits/stdc++.h>
 #include <GL/glut.h>
 #include "vec3f.h"
+#include "ripple.h"
 
 using namespace std;
 
@@ -14,11 +15,10 @@ class Lake {
 		vector<vector<float>> hs; 
 		vector<vector<Vec3f>> normals;
         vector<vector<bool>> isOut;
-		bool computedNormals;
         int height;
 
-        // First 2 represent co-ordinates, 3rd defines start time
-        vector<vector<Vec3f>> ripples;
+        set<Ripple> ripples;
+
 	public: 
 		Lake(int height);
 		~Lake();
@@ -31,6 +31,8 @@ class Lake {
 		int length();
 		void set_height(int x, int z, float y);
 		float get_height(int x, int z);
+
+		void addRipple(float x, float z, float amp);
 };
 
 #endif
