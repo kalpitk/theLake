@@ -18,15 +18,16 @@ float yview = zNear*FSCALE*tan(fov/2*M_PI/180.0);
 
 float gtx=0.0,gty=0.0,gtz=0.0;
 
-void lakePoint(int x, int y, float z) {
+void lakePoint(int x, int y, float z, Vec3f color) {
 	// get color here from reflection, apply alpha like this
 	if(_lake->is_outside(x, z)) {
 		glColor4f(0.0f,0.0f,1.0f,0.0f);
 	}
 	else {
-		glColor4f(0.0f,0.0f,1.0f,0.5f);
+		Vec3f blendedColor = blendColor(color, 0.4, Vec3f(0.0, 0.0, 255.0), 0.6);
+		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 0.5f);
 	}
-	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  _lake->get_height(x, z)), FSCALE * (Z_OFF +  z));
+	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  y), FSCALE * (Z_OFF +  z));
 }
 
 void timer(int value) {
@@ -300,13 +301,73 @@ void render_terrain(GLuint ground_texture) {
 	glDisable(GL_TEXTURE_2D);
 }
 
+Vec3f calcReflectRay(Vec3f normal, int x, int y, int z){
+	Vec3f cameraPos = Vec3f(cam_x, cam_y, cam_z);
+	Vec3f currPoint = Vec3f((float)x,(float)y,(float)z);
+	Vec3f dir = currPoint - cameraPos;
+	int dotProd = dir[0]*normal[0] + dir[1]*normal[1] + dir[2]*normal[2];
+	Vec3f normalVec = normal*dotProd;
+	Vec3f reflectRay = dir - (normalVec*2);
+	return reflectRay/reflectRay.magnitude();
+}
+
+Vec3f calcColor(Vec3f ray, int x, int y, int z){
+	int y_act, x_act, z_act;
+	float k;
+// Intersection with top plane
+	y_act = 375;
+	k = (float)(y - y_act)/(float)ray[1];
+	x_act = x + ray[0]*k;
+	z_act = z + ray[2]*k;
+	// if(x_act < 100) cout<<"x : "<<x_act<<" y : "<<y_act<<" z : "<<z_act<<endl;
+	cout << " r : " << colorAtTop(x_act + 125, 375 - z_act, tod)[0] << " g : " << colorAtTop(x_act + 125, 375 - z_act, tod)[1]<< " b : " << colorAtTop(x_act + 125, 375 - z_act, tod)[2];
+	return colorAtTop(x_act + 125, 375 - z_act, tod);
+
+// Intersection with right plane
+	x_act = 375;
+	k = (float)(x - x_act)/(float)ray[0];
+	y_act = y + ray[1]*k;
+	z_act = z + ray[2]*k;
+	if(y_act >= -125 && y_act <= 375 && z_act >= -125 && z_act <= 375) return colorAtRight(375 - z_act, y_act + 125, tod);
+
+// Intersection with left plane
+	x_act = -125;
+	k = (float)(x - x_act)/(float)ray[0];
+	y_act = y + ray[1]*k;
+	z_act = z + ray[2]*k;
+	if(y_act >= -125 && y_act <= 375 && z_act >= -125 && z_act <= 375) return colorAtLeft(z_act + 125, y_act + 125, tod);
+
+// Intersection with front plane
+	z_act = 375;
+	k = (float)(z - z_act)/(float)ray[2];
+	y_act = y + ray[1]*k;
+	x_act = z + ray[0]*k;
+	if(y_act >= -125 && y_act <= 375 && x_act >= -125 && x_act <= 375) return colorAtTop(x_act + 125, y_act + 125, tod);
+
+// Intersection with back plane
+	z_act = -125;
+	k = (float)(z - z_act)/(float)ray[2];
+	y_act = y + ray[1]*k;
+	x_act = z + ray[0]*k;
+	if(y_act >= -125 && y_act <= 375 && x_act >= -125 && x_act <= 375) return colorAtBack(375 - x_act, y_act + 125, tod);
+
+	return Vec3f(255.0, 255.0, 255.0);
+
+}
+
 void render_points_lake(Vec3f normal,int x,int z) {
 	glNormal3f(FSCALE * (X_OFF +  normal[0]), FSCALE * (Y_OFF +  normal[1]), FSCALE * (Z_OFF +  normal[2]));
-	lakePoint(x, _lake->get_height(x, z), z);
+	int y = _lake->get_height(x, z);
+	Vec3f reflectRay = calcReflectRay(normal, x, y, z);
+	Vec3f color = calcColor(reflectRay, x, y, z);
+	lakePoint(x, y, z, color);
 
+	y = _lake->get_height(x, z+1);
 	normal = _lake->get_normal(x, z + 1);
 	glNormal3f((X_OFF +  normal[0]), Y_OFF +  normal[1], Z_OFF +  normal[2]);
-	lakePoint(x, _lake->get_height(x, z+1), z+1);
+	reflectRay = calcReflectRay(normal, x, y, z+1);
+	color = calcColor(reflectRay, x, y, z+1);
+	lakePoint(x, y, z+1, color);
 }
 
 void render_lake() {
@@ -461,6 +522,8 @@ void load_image_resources() {
 
 	sky_night1 = loadTx("./resources/sky/night.bmp");
 	sky_night2 = sky_night3 = sky_night4 = sky_night1;
+
+	loadImages();
 }
 
 void initRendering(){

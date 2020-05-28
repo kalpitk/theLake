@@ -1,6 +1,8 @@
 #ifndef VARIABLES_H
 #define VARIABLES_H
 
+#include "imageloader.h"
+
 // Model Variables
 float FSCALE = 100.0f; 
 const int X_OFF = 0; 
@@ -34,6 +36,12 @@ sky_afternoon1, sky_afternoon2, sky_afternoon3, sky_afternoon4,
 sky_morning1, sky_morning2, sky_morning3, sky_morning4,
 sky_evening1, sky_evening2, sky_evening3, sky_evening4, 
 sky_night1, sky_night2, sky_night3, sky_night4; 
+
+// Images
+Image *topMorning, *topAfternoon, *topEvening, *topNight,
+*backMorning, *backAfternoon, *backEvening, *backNight,
+*rightMorning, *rightAfternoon, *rightEvening, *rightNight, 
+*leftMorning, *leftAfternoon, *leftEvening, *leftNight;
 
 // Time Variables
 enum TimeOfDay {
