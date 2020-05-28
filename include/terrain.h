@@ -13,7 +13,7 @@ class Terrain {
 		int l; 
 		vector<vector<float>> hs; 
 		vector<vector<Vec3f>> normals;
-		bool computedNormals; 
+
 	public: 
 		Terrain(int height);
 		~Terrain();

@@ -16,7 +16,7 @@ float yaw  =  3.141592653;
 float pitch = 0.0f;
 float lx = 0.0f,lz = 1.0f,ly = 0.0f;
 float cam_x = 307.696,cam_y = 10.0,cam_z =  50.0873;
-bool controlMode  = false;
+bool mouseMovedDownState = false;
 bool warped = false;
 bool full_screen = false;
 bool controls = true;

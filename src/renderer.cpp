@@ -115,7 +115,6 @@ string ControlStr[]={
 	"J: MOVE DOWN",
 	"T: INC TIME",
 	"SHIFT+T: DEC TIME",
-	"Left Ctrl: TOGGLE CONTROL MODE",
 	"C: TOGGLE INSTRUCTIONS",
 	"F: TOGGLE FULL SCREEN",
 	"ESC: EXIT"
@@ -142,12 +141,6 @@ void renderText(void *font,string str,float txt_xoff,float txt_yoff,float rc,flo
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_TEXTURE_2D);
-}
-
-void keyboardSpecial(int key, int mouseX, int mouseY) {
-    switch (key) {
-        case 114: controlMode = !controlMode; break; // Left Ctrl Key
-    }
 }
 
 void keyboard(unsigned char key,int x,int y){
@@ -201,9 +194,17 @@ void keyboard(unsigned char key,int x,int y){
 }
 
 void mouse(int button, int state, int mouseX, int mouseY) {
-	if(controlMode) {
-		// Trigger ripple on Mouse Down (Any Mouse button)
-		if(state == GLUT_DOWN) {
+	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+		cameraMouseMovement = true;
+		mouseMovedDownState = false;
+
+		prevMouseX = mouseX;
+		prevMouseY = mouseY;
+	}
+	else if(button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+		cameraMouseMovement = false;
+
+		if(!mouseMovedDownState) {
 			GLint viewport[4];
 			glGetIntegerv(GL_VIEWPORT, viewport);
 
@@ -228,16 +229,6 @@ void mouse(int button, int state, int mouseX, int mouseY) {
 
 			_lake->addRipple(posX, posZ, 1);
 		}
-		return;
-	}
-
-	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		cameraMouseMovement = true;
-		prevMouseX = mouseX;
-		prevMouseY = mouseY;
-	}
-	else if(button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-		cameraMouseMovement = false;
 	}
 }
 
@@ -245,28 +236,24 @@ void mouseMove(int mouseX, int mouseY) {
 
 	if(!cameraMouseMovement) return;
 	
-	if(controlMode) {
-		// TODO: Drag & Drop Code
-		// QUESTION: Drag stone, or just handle click for ripple
+	if(warped){
+		warped=false;
+		return;
 	}
-	else {
-		if(warped){
-			warped=false;
-			return;
-		}
-		pitch += (prevMouseY-mouseY)*rot_speed;
-		if(pitch>=limit) pitch=limit;
-		else if(pitch<=-limit) pitch= -limit;
-		yaw += (mouseX-prevMouseX)*rot_speed;
-		lx = cos(pitch)*sin(yaw);
-		ly = sin(pitch);
-		lz = -cos(pitch)*cos(yaw);
-		warped=true;
-		glutPostRedisplay();
+	pitch += (prevMouseY-mouseY)*rot_speed;
+	if(pitch>=limit) pitch=limit;
+	else if(pitch<=-limit) pitch= -limit;
+	yaw += (mouseX-prevMouseX)*rot_speed;
+	lx = cos(pitch)*sin(yaw);
+	ly = sin(pitch);
+	lz = -cos(pitch)*cos(yaw);
+	warped=true;
+	glutPostRedisplay();
 
-		prevMouseX = mouseX;
-		prevMouseY = mouseY;
-	}
+	prevMouseX = mouseX;
+	prevMouseY = mouseY;
+
+	mouseMovedDownState = true;
 }
 
 void render_points(Vec3f normal,int x,int z) {
@@ -475,7 +462,7 @@ void drawScene(){
 	renderText(GLUT_BITMAP_TIMES_ROMAN_24,formatTime(),-swidth+50.0,sheight-80.0,1.0,0.0,0.0);
 	
 	if(controls){
-		for(int i=0;i<12;i++){
+		for(int i=0;i<11;i++){
 			renderText(GLUT_BITMAP_HELVETICA_18,ControlStr[i],-swidth+50.0,sheight-140.0-60.0*i,1.0,1.0,1.0);
 		}
 	}

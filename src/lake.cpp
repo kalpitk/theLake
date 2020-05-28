@@ -32,7 +32,6 @@ Lake::Lake(int height) {
 void Lake::update() {
 	for(auto it = ripples.begin(); it != ripples.end(); ++it) {
 		if((*it).waveDistance() > 150) {
-			cout<<ripples.size()<<endl;
 			ripples.erase(it++);
 			continue;
 		}
