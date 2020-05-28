@@ -21,6 +21,7 @@ GLuint loadTexture(Image* image) {
 GLuint loadTx(string str) {
 	const char* path = str.c_str();
 	Image* image = loadBMP(path);
+	// cout<<"Pixel1 size : "<<(unsigned int)(*image->pixels)<<endl;
 	GLuint tex = loadTexture(image);
 	delete image;
 	return tex;
@@ -45,6 +46,8 @@ void loadImages(){
 
 	topNight = loadBMP("./resources/sky/night.bmp");
 	rightNight = backNight = leftNight = topNight;
+
+	// cout<<"Pixel size : "<<sizeof((topNight->pixels))/sizeof(char)<<endl;
 }
 
 Vec3f colorAtTop(int x, int y, TimeOfDay tod){
@@ -54,21 +57,25 @@ Vec3f colorAtTop(int x, int y, TimeOfDay tod){
 			r = topNight->pixels[3*(1920*y + x)];
 			g = topNight->pixels[3*(1920*y + x) + 1];
 			b = topNight->pixels[3*(1920*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Afternoon : {
 			r = topAfternoon->pixels[3*(1024*y + x)];
 			g = topAfternoon->pixels[3*(1024*y + x) + 1];
 			b = topAfternoon->pixels[3*(1024*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Morning : {
 			r = topMorning->pixels[3*(1024*y + x)];
 			g = topMorning->pixels[3*(1024*y + x) + 1];
 			b = topMorning->pixels[3*(1024*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Evening : {
 			r = topEvening->pixels[3*(512*y + x)];
 			g = topEvening->pixels[3*(512*y + x) + 1];
 			b = topEvening->pixels[3*(512*y + x) + 2];
+			break;
 		}
 	}
 	return Vec3f((float)r, (float)g, (float)b);
@@ -81,21 +88,25 @@ Vec3f colorAtRight(int x, int y, TimeOfDay tod){
 			r = rightNight->pixels[3*(1920*y + x)];
 			g = rightNight->pixels[3*(1920*y + x) + 1];
 			b = rightNight->pixels[3*(1920*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Afternoon : {
 			r = rightAfternoon->pixels[3*(1024*y + x)];
 			g = rightAfternoon->pixels[3*(1024*y + x) + 1];
 			b = rightAfternoon->pixels[3*(1024*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Morning : {
 			r = rightMorning->pixels[3*(1024*y + x)];
 			g = rightMorning->pixels[3*(1024*y + x) + 1];
 			b = rightMorning->pixels[3*(1024*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Evening : {
 			r = rightEvening->pixels[3*(512*y + x)];
 			g = rightEvening->pixels[3*(512*y + x) + 1];
 			b = rightEvening->pixels[3*(512*y + x) + 2];
+			break;
 		}
 	}
 	return Vec3f((float)r, (float)g, (float)b);
@@ -108,21 +119,25 @@ Vec3f colorAtLeft(int x, int y, TimeOfDay tod){
 			r = leftNight->pixels[3*(1920*y + x)];
 			g = leftNight->pixels[3*(1920*y + x) + 1];
 			b = leftNight->pixels[3*(1920*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Afternoon : {
 			r = leftAfternoon->pixels[3*(1024*y + x)];
 			g = leftAfternoon->pixels[3*(1024*y + x) + 1];
 			b = leftAfternoon->pixels[3*(1024*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Morning : {
 			r = leftMorning->pixels[3*(1024*y + x)];
 			g = leftMorning->pixels[3*(1024*y + x) + 1];
 			b = leftMorning->pixels[3*(1024*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Evening : {
 			r = leftEvening->pixels[3*(512*y + x)];
 			g = leftEvening->pixels[3*(512*y + x) + 1];
 			b = leftEvening->pixels[3*(512*y + x) + 2];
+			break;
 		}
 	}
 	return Vec3f((float)r, (float)g, (float)b);
@@ -135,21 +150,25 @@ Vec3f colorAtBack(int x, int y, TimeOfDay tod){
 			r = backNight->pixels[3*(1920*y + x)];
 			g = backNight->pixels[3*(1920*y + x) + 1];
 			b = backNight->pixels[3*(1920*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Afternoon : {
 			r = backAfternoon->pixels[3*(1024*y + x)];
 			g = backAfternoon->pixels[3*(1024*y + x) + 1];
 			b = backAfternoon->pixels[3*(1024*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Morning : {
 			r = backMorning->pixels[3*(1024*y + x)];
 			g = backMorning->pixels[3*(1024*y + x) + 1];
 			b = backMorning->pixels[3*(1024*y + x) + 2];
+			break;
 		}
 		case TimeOfDay::Evening : {
 			r = backEvening->pixels[3*(512*y + x)];
 			g = backEvening->pixels[3*(512*y + x) + 1];
 			b = backEvening->pixels[3*(512*y + x) + 2];
+			break;
 		}
 	}
 	return Vec3f((float)r, (float)g, (float)b);

@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <fstream>
+#include <bits/stdc++.h>
 #include "../include/imageloader.h"
 using namespace std;
 
@@ -156,7 +157,7 @@ Image* loadBMP(const char* filename) {
 			}
 		}
 	}
-	
+	// std::cout<<"Pixel size : "<<(int)(pixels2[0])<<endl;
 	input.close();
 	return new Image(pixels2.release(), width, height);
 }
