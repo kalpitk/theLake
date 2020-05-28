@@ -7,7 +7,6 @@
 using namespace std;
 
 Terrain::Terrain(int height) {
-	computedNormals = false;
 	loadTerrain(height);
 	compute_normals();
 }
@@ -41,9 +40,6 @@ Terrain::~Terrain() {
 }
 
 void Terrain::compute_normals() {
-	if (computedNormals) {
-		return;
-	}
 	
 	vector<vector<Vec3f>> normals2 = vector<vector<Vec3f>>(l, vector<Vec3f>(w));
 	
@@ -114,14 +110,9 @@ void Terrain::compute_normals() {
 		normals2[i].clear();
 	}
 	normals2.clear();
-	
-	computedNormals = true;
 }
 
 Vec3f Terrain::get_normal(int x, int z) {
-	if (!computedNormals) {
-		compute_normals();
-	}
 	return normals[z][x];	
 }
 
@@ -135,7 +126,6 @@ int Terrain::length() {
 
 void Terrain::set_height(int x, int z, float y) {
 	hs[z][x] = y;
-	computedNormals = false;
 }
 
 float Terrain::get_height(int x, int z) {
