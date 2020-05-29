@@ -24,8 +24,8 @@ void lakePoint(int x, float y, int z, Vec3f color) {
 		glColor4f(0.0f,0.0f,1.0f,0.0f);
 	}
 	else {
-		Vec3f blendedColor = blendColor(color, 0.7f, Vec3f(100.0, 100.0, 100.0), 0.3f);
-		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 0.5f);
+		Vec3f blendedColor = blendColor(color, 0.8f, Vec3f(100.0, 100.0, 255.0), 0.2f);
+		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 0.8f);
 	}
 	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  y), FSCALE * (Z_OFF +  z));
 }
@@ -81,11 +81,11 @@ void update_local_vars() {
 		lighting();
 		tod = TimeOfDay::Morning;
 	} 
-	else if (time_hr > 11 && time_hr <= 17) {
+	else if (time_hr > 11 && time_hr <= 15) {
 		lighting();
 		tod = TimeOfDay::Afternoon;
 	} 
-	else if (time_hr > 17 && time_hr <= 19) {
+	else if (time_hr > 15 && time_hr <= 19) {
 		lighting();
 		tod = TimeOfDay::Evening;
 	} 
@@ -305,54 +305,63 @@ Vec3f calcColor(Vec3f ray, int x, int y, int z){
 // Intersection with top plane
 	y_act = 375*FSCALE;
 	k = (float)(y - y_act)/(float)ray[1];
-	x_act = (float)x + ray[0]*k;
-	z_act = (float)z + ray[2]*k;
+	x_act = (float)x - ray[0]*k;
+	z_act = (float)z - ray[2]*k;
 	x_act/=FSCALE;
 	z_act/=FSCALE;
 	y_act/=FSCALE;
-	if(x_act >= -125 && x_act <= 375 && z_act >= -125 && z_act <= 375) return colorAtTop(x_act + 125, 375 - z_act, tod);
-	
+	// if(x==174 && z==209){
+	// 	cout<<"Dir_x : "<<ray[0]<<" Dir_y : "<<ray[1]<<" Dir_z : "<<ray[2]<<endl;
+	// 	cout<<" X : "<<x<<" Y : "<<y<<" Z : "<<z<<endl;
+	// 	cout<<"X_act : "<<x_act<<" Y_act : "<<y_act<<" Z_act : "<<z_act<<endl;	
+	// }
+	if(x_act >= -125 && x_act <= 375 && z_act >= -125 && z_act <= 375) return colorAtTop(x_act + 125.0, 375 - z_act, tod);
 // Intersection with right plane
 	x_act = 375*FSCALE;
 	k = (float)(x - x_act)/(float)ray[0];
-	y_act = y + ray[1]*k;
-	z_act = z + ray[2]*k;
+	y_act = y - ray[1]*k;
+	z_act = z - ray[2]*k;
 	x_act/=FSCALE;
 	z_act/=FSCALE;
 	y_act/=FSCALE;
-	if(y_act >= -125 && y_act <= 375 && z_act >= -125 && z_act <= 375) return colorAtRight(375 - (int)z_act, (int)y_act + 125, tod);
+	if(y_act >= -125 && y_act <= 375 && z_act >= -125 && z_act <= 375) return colorAtRight(375.0 - z_act, y_act + 125.0, tod);
 
 // Intersection with left plane
 	x_act = -125*FSCALE;
 	k = (float)(x - x_act)/(float)ray[0];
-	y_act = y + ray[1]*k;
-	z_act = z + ray[2]*k;
+	y_act = y - ray[1]*k;
+	z_act = z - ray[2]*k;
 	x_act/=FSCALE;
 	z_act/=FSCALE;
 	y_act/=FSCALE;
-	if(y_act >= -125 && y_act <= 375 && z_act >= -125 && z_act <= 375) return colorAtLeft((int)z_act + 125, (int)y_act + 125, tod);
+	if(y_act >= -125 && y_act <= 375 && z_act >= -125 && z_act <= 375) return colorAtLeft(z_act + 125.0, y_act + 125.0, tod);
 
 // Intersection with front plane
 	z_act = 375*FSCALE;
 	k = (float)(z - z_act)/(float)ray[2];
-	y_act = y + ray[1]*k;
-	x_act = z + ray[0]*k;
+	y_act = y - ray[1]*k;
+	x_act = z - ray[0]*k;
 	x_act/=FSCALE;
 	z_act/=FSCALE;
 	y_act/=FSCALE;
-	if(y_act >= -125 && y_act <= 375 && x_act >= -125 && x_act <= 375) return colorAtTop((int)x_act + 125, (int)y_act + 125, tod);
+	if(y_act >= -125 && y_act <= 375 && x_act >= -125 && x_act <= 375) return colorAtTop(x_act + 125.0, y_act + 125.0, tod);
 
 // Intersection with back plane
 	z_act = -125*FSCALE;
 	k = (float)(z - z_act)/(float)ray[2];
-	y_act = y + ray[1]*k;
-	x_act = z + ray[0]*k;
+	y_act = y - ray[1]*k;
+	x_act = z - ray[0]*k;
 	x_act/=FSCALE;
 	z_act/=FSCALE;
 	y_act/=FSCALE;
-	if(y_act >= -125 && y_act <= 375 && x_act >= -125 && x_act <= 375) return colorAtBack(375 - (int)x_act, (int)y_act + 125, tod);
+	if(y_act >= -125 && y_act <= 375 && x_act >= -125 && x_act <= 375) return colorAtBack(375.0 - x_act, y_act + 125.0, tod);
 
-	return colorAtTop(10,10, tod);
+	// x = x/FSCALE;
+	// y = y/FSCALE;
+	// z = z/FSCALE;
+	// cout<<"# x : "<<x<<" z : "<<z<<endl;
+
+	return colorAtTop(100, 100, tod);
 }
 
 void render_points_lake(Vec3f normal,int x,int z) {
@@ -441,7 +450,7 @@ void render_sky_helper(GLuint t1,GLuint t2,GLuint t3,GLuint t4,GLuint t5,GLuint 
 void render_sky() {
 	switch (tod) {
 		case TimeOfDay::Night : {
-			render_sky_helper(sky_night1,sky_night2,sky_night3,sky_night4,sky_night1,sky_night1,Vec3f(-100,-100,-100),sky_coord,2.0f);
+			render_sky_helper(sky_night1,sky_night2,sky_night3,sky_night4,sky_night1,sky_night1,Vec3f(-100,-100,-100),sky_coord,4.0f);
 			break;
 		}
 		case TimeOfDay::Afternoon : {
@@ -488,7 +497,6 @@ void drawScene(){
 
 	render_terrain(ground_texture);
 	render_lake();
-
 	glutSwapBuffers();
 
 }
