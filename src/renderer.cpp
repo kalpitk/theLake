@@ -24,7 +24,7 @@ void lakePoint(int x, float y, int z, Vec3f color) {
 		glColor4f(0.0f,0.0f,1.0f,0.0f);
 	}
 	else {
-		Vec3f blendedColor = blendColor(color, 0.8f, Vec3f(100.0, 100.0, 255.0), 0.2f);
+		Vec3f blendedColor = blendColor(color, 0.9f, Vec3f(100.0, 100.0, 100.0), 0.1f);
 		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 0.8f);
 	}
 	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  y), FSCALE * (Z_OFF +  z));
@@ -450,7 +450,7 @@ void render_sky_helper(GLuint t1,GLuint t2,GLuint t3,GLuint t4,GLuint t5,GLuint 
 void render_sky() {
 	switch (tod) {
 		case TimeOfDay::Night : {
-			render_sky_helper(sky_night1,sky_night2,sky_night3,sky_night4,sky_night1,sky_night1,Vec3f(-100,-100,-100),sky_coord,4.0f);
+			render_sky_helper(sky_night1,sky_night2,sky_night3,sky_night4,sky_night1,sky_night1,Vec3f(-100,-100,-100),sky_coord,1.0f);
 			break;
 		}
 		case TimeOfDay::Afternoon : {
@@ -512,7 +512,7 @@ void handleResize(int w, int h){
 
 void load_image_resources() {
 
-	ground_texture = loadTx("./resources/terrain_texture.bmp");
+	ground_texture = loadTx("./resources/ground_terrain.bmp");
 
 	sky_afternoon1 = loadTx("./resources/sky/afternoon/1.bmp");
 	sky_afternoon2 = loadTx("./resources/sky/afternoon/2.bmp");
