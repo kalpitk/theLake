@@ -18,14 +18,14 @@ float yview = zNear*FSCALE*tan(fov/2*M_PI/180.0);
 
 float gtx=0.0,gty=0.0,gtz=0.0;
 
-void lakePoint(int x, int y, float z, Vec3f color) {
+void lakePoint(int x, float y, int z, Vec3f color) {
 	// get color here from reflection, apply alpha like this
 	if(_lake->is_outside(x, z)) {
 		glColor4f(0.0f,0.0f,1.0f,0.0f);
 	}
 	else {
-		Vec3f blendedColor = blendColor(color, 0.7, Vec3f(0.0, 0.0, 255.0), 0.3);
-		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 0.6f);
+		Vec3f blendedColor = blendColor(color, 1.0, Vec3f(0.0, 0.0, 255.0), 0.0);
+		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 1.0f);
 	}
 	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  y), FSCALE * (Z_OFF +  z));
 }
