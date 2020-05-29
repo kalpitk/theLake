@@ -30,10 +30,14 @@ Lake::Lake(int height) {
 }
 
 void Lake::update() {
-	for(auto it = ripples.begin(); it != ripples.end(); ++it) {
+
+	// Remove ripples from set that are old enough
+	for(auto it = ripples.begin(); it != ripples.end();) {
 		if((*it).waveDistance() > 150) {
 			ripples.erase(it++);
-			continue;
+		}
+		else {
+			it++;
 		}
 	}
 

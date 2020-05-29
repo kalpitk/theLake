@@ -24,8 +24,8 @@ void lakePoint(int x, float y, int z, Vec3f color) {
 		glColor4f(0.0f,0.0f,1.0f,0.0f);
 	}
 	else {
-		Vec3f blendedColor = blendColor(color, 1.0, Vec3f(0.0, 0.0, 255.0), 0.0);
-		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 1.0f);
+		Vec3f blendedColor = blendColor(color, 0.7f, Vec3f(100.0, 100.0, 100.0), 0.3f);
+		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 0.5f);
 	}
 	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  y), FSCALE * (Z_OFF +  z));
 }
@@ -352,7 +352,7 @@ Vec3f calcColor(Vec3f ray, int x, int y, int z){
 	y_act/=FSCALE;
 	if(y_act >= -125 && y_act <= 375 && x_act >= -125 && x_act <= 375) return colorAtBack(375 - (int)x_act, (int)y_act + 125, tod);
 
-	return Vec3f(0.0f, 0.0f, 255.0f);
+	return colorAtTop(10,10, tod);
 }
 
 void render_points_lake(Vec3f normal,int x,int z) {
