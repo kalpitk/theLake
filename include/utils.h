@@ -50,124 +50,160 @@ void loadImages(){
 	// cout<<"Pixel size : "<<sizeof((topNight->pixels))/sizeof(char)<<endl;
 }
 
-Vec3f colorAtTop(int x, int y, TimeOfDay tod){
+Vec3f colorAtTop(float x, float y, TimeOfDay tod){
 	int r,g,b;
+	int p,q;
 	switch (tod) {
 		case TimeOfDay::Night : {
-			r = (unsigned char)topNight->pixels[3*(1920*y + x)];
-			g = (unsigned char)topNight->pixels[3*(1920*y + x) + 1];
-			b = (unsigned char)topNight->pixels[3*(1920*y + x) + 2];
+			p = (int)(x*(96.0/25.0));
+			q = (int)(y*(127.0/50.0));
+			r = (unsigned char)topNight->pixels[3*(1920*q + p)];
+			g = (unsigned char)topNight->pixels[3*(1920*q + p) + 1];
+			b = (unsigned char)topNight->pixels[3*(1920*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Afternoon : {
-			r = (unsigned char)topAfternoon->pixels[3*(1024*y + x)];
-			g = (unsigned char)topAfternoon->pixels[3*(1024*y + x) + 1];
-			b = (unsigned char)topAfternoon->pixels[3*(1024*y + x) + 2];
+			p = (int)(x*(256.0/125.0));
+			q = (int)(y*(256.0/125.0));
+			r = (unsigned char)topAfternoon->pixels[3*(1024*q + p)];
+			g = (unsigned char)topAfternoon->pixels[3*(1024*q + p) + 1];
+			b = (unsigned char)topAfternoon->pixels[3*(1024*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Morning : {
-			r = (unsigned char)topMorning->pixels[3*(1024*y + x)];
-			g = (unsigned char)topMorning->pixels[3*(1024*y + x) + 1];
-			b = (unsigned char)topMorning->pixels[3*(1024*y + x) + 2];
+			p = (int)(x*(256.0/125.0));
+			q = (int)(y*(256.0/125.0));
+			r = (unsigned char)topMorning->pixels[3*(1024*q + p)];
+			g = (unsigned char)topMorning->pixels[3*(1024*q + p) + 1];
+			b = (unsigned char)topMorning->pixels[3*(1024*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Evening : {
-			r = (unsigned char)topEvening->pixels[3*(512*y + x)];
-			g = (unsigned char)topEvening->pixels[3*(512*y + x) + 1];
-			b = (unsigned char)topEvening->pixels[3*(512*y + x) + 2];
+			p = (int)(x*(128.0/125.0));
+			q = (int)(y*(128.0/125.0));
+			r = (unsigned char)topEvening->pixels[3*(512*q + p)];
+			g = (unsigned char)topEvening->pixels[3*(512*q + p) + 1];
+			b = (unsigned char)topEvening->pixels[3*(512*q + p) + 2];
 			break;
 		}
 	}
 	return Vec3f((float)r, (float)g, (float)b) + Vec3f(128, 128, 128);
 }
 
-Vec3f colorAtRight(int x, int y, TimeOfDay tod){
+Vec3f colorAtRight(float x, float y, TimeOfDay tod){
 	int r,g,b;
+	int p,q;
 	switch (tod) {
 		case TimeOfDay::Night : {
-			r = (unsigned char)rightNight->pixels[3*(1920*y + x)];
-			g = (unsigned char)rightNight->pixels[3*(1920*y + x) + 1];
-			b = (unsigned char)rightNight->pixels[3*(1920*y + x) + 2];
+			p = (int)(x*(96.0/25.0));
+			q = (int)(y*(127.0/50.0));
+			r = (unsigned char)rightNight->pixels[3*(1920*q + p)];
+			g = (unsigned char)rightNight->pixels[3*(1920*q + p) + 1];
+			b = (unsigned char)rightNight->pixels[3*(1920*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Afternoon : {
-			r = (unsigned char)rightAfternoon->pixels[3*(1024*y + x)];
-			g = (unsigned char)rightAfternoon->pixels[3*(1024*y + x) + 1];
-			b = (unsigned char)rightAfternoon->pixels[3*(1024*y + x) + 2];
+			p = (int)(x*(256.0/125.0));
+			q = (int)(y*(256.0/125.0));
+			r = (unsigned char)rightAfternoon->pixels[3*(1024*q + p)];
+			g = (unsigned char)rightAfternoon->pixels[3*(1024*q + p) + 1];
+			b = (unsigned char)rightAfternoon->pixels[3*(1024*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Morning : {
-			r = (unsigned char)rightMorning->pixels[3*(1024*y + x)];
-			g = (unsigned char)rightMorning->pixels[3*(1024*y + x) + 1];
-			b = (unsigned char)rightMorning->pixels[3*(1024*y + x) + 2];
+			p = (int)(x*(256.0/125.0));
+			q = (int)(y*(256.0/125.0));
+			r = (unsigned char)rightMorning->pixels[3*(1024*q + p)];
+			g = (unsigned char)rightMorning->pixels[3*(1024*q + p) + 1];
+			b = (unsigned char)rightMorning->pixels[3*(1024*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Evening : {
-			r = (unsigned char)rightEvening->pixels[3*(512*y + x)];
-			g = (unsigned char)rightEvening->pixels[3*(512*y + x) + 1];
-			b = (unsigned char)rightEvening->pixels[3*(512*y + x) + 2];
+			p = (int)(x*(128.0/125.0));
+			q = (int)(y*(128.0/125.0));
+			r = (unsigned char)rightEvening->pixels[3*(512*q + p)];
+			g = (unsigned char)rightEvening->pixels[3*(512*q + p) + 1];
+			b = (unsigned char)rightEvening->pixels[3*(512*q + p) + 2];
 			break;
 		}
 	}
 	return Vec3f((float)r, (float)g, (float)b) + Vec3f(128, 128, 128);
 }
 
-Vec3f colorAtLeft(int x, int y, TimeOfDay tod){
+Vec3f colorAtLeft(float x, float y, TimeOfDay tod){
 	int r,g,b;
+	int p,q;
 	switch (tod) {
 		case TimeOfDay::Night : {
-			r = (unsigned char)leftNight->pixels[3*(1920*y + x)];
-			g = (unsigned char)leftNight->pixels[3*(1920*y + x) + 1];
-			b = (unsigned char)leftNight->pixels[3*(1920*y + x) + 2];
+			p = (int)(x*(96.0/25.0));
+			q = (int)(y*(127.0/50.0));
+			r = (unsigned char)leftNight->pixels[3*(1920*q + p)];
+			g = (unsigned char)leftNight->pixels[3*(1920*q + p) + 1];
+			b = (unsigned char)leftNight->pixels[3*(1920*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Afternoon : {
-			r = (unsigned char)leftAfternoon->pixels[3*(1024*y + x)];
-			g = (unsigned char)leftAfternoon->pixels[3*(1024*y + x) + 1];
-			b = (unsigned char)leftAfternoon->pixels[3*(1024*y + x) + 2];
+			p = (int)(x*(256.0/125.0));
+			q = (int)(y*(256.0/125.0));
+			r = (unsigned char)leftAfternoon->pixels[3*(1024*q + p)];
+			g = (unsigned char)leftAfternoon->pixels[3*(1024*q + p) + 1];
+			b = (unsigned char)leftAfternoon->pixels[3*(1024*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Morning : {
-			r = (unsigned char)leftMorning->pixels[3*(1024*y + x)];
-			g = (unsigned char)leftMorning->pixels[3*(1024*y + x) + 1];
-			b = (unsigned char)leftMorning->pixels[3*(1024*y + x) + 2];
+			p = (int)(x*(256.0/125.0));
+			q = (int)(y*(256.0/125.0));
+			r = (unsigned char)leftMorning->pixels[3*(1024*q + p)];
+			g = (unsigned char)leftMorning->pixels[3*(1024*q + p) + 1];
+			b = (unsigned char)leftMorning->pixels[3*(1024*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Evening : {
-			r = (unsigned char)leftEvening->pixels[3*(512*y + x)];
-			g = (unsigned char)leftEvening->pixels[3*(512*y + x) + 1];
-			b = (unsigned char)leftEvening->pixels[3*(512*y + x) + 2];
+			p = (int)(x*(128.0/125.0));
+			q = (int)(y*(128.0/125.0));
+			r = (unsigned char)leftEvening->pixels[3*(512*q + p)];
+			g = (unsigned char)leftEvening->pixels[3*(512*q + p) + 1];
+			b = (unsigned char)leftEvening->pixels[3*(512*q + p) + 2];
 			break;
 		}
 	}
 	return Vec3f((float)r, (float)g, (float)b) + Vec3f(128, 128, 128);
 }
 
-Vec3f colorAtBack(int x, int y, TimeOfDay tod){
+Vec3f colorAtBack(float x, float y, TimeOfDay tod){
 	int r,g,b;
+	int p,q;
 	switch (tod) {
 		case TimeOfDay::Night : {
-			r = (unsigned char)backNight->pixels[3*(1920*y + x)];
-			g = (unsigned char)backNight->pixels[3*(1920*y + x) + 1];
-			b = (unsigned char)backNight->pixels[3*(1920*y + x) + 2];
+			p = (int)(x*(96.0/25.0));
+			q = (int)(y*(127.0/50.0));
+			r = (unsigned char)backNight->pixels[3*(1920*q + p)];
+			g = (unsigned char)backNight->pixels[3*(1920*q + p) + 1];
+			b = (unsigned char)backNight->pixels[3*(1920*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Afternoon : {
-			r = (unsigned char)backAfternoon->pixels[3*(1024*y + x)];
-			g = (unsigned char)backAfternoon->pixels[3*(1024*y + x) + 1];
-			b = (unsigned char)backAfternoon->pixels[3*(1024*y + x) + 2];
+			p = (int)(x*(256.0/125.0));
+			q = (int)(y*(256.0/125.0));
+			r = (unsigned char)backAfternoon->pixels[3*(1024*q + p)];
+			g = (unsigned char)backAfternoon->pixels[3*(1024*q + p) + 1];
+			b = (unsigned char)backAfternoon->pixels[3*(1024*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Morning : {
-			r = (unsigned char)backMorning->pixels[3*(1024*y + x)];
-			g = (unsigned char)backMorning->pixels[3*(1024*y + x) + 1];
-			b = (unsigned char)backMorning->pixels[3*(1024*y + x) + 2];
+			p = (int)(x*(256.0/125.0));
+			q = (int)(y*(256.0/125.0));
+			r = (unsigned char)backMorning->pixels[3*(1024*q + p)];
+			g = (unsigned char)backMorning->pixels[3*(1024*q + p) + 1];
+			b = (unsigned char)backMorning->pixels[3*(1024*q + p) + 2];
 			break;
 		}
 		case TimeOfDay::Evening : {
-			r = (unsigned char)backEvening->pixels[3*(512*y + x)];
-			g = (unsigned char)backEvening->pixels[3*(512*y + x) + 1];
-			b = (unsigned char)backEvening->pixels[3*(512*y + x) + 2];
+			p = (int)(x*(128.0/125.0));
+			q = (int)(y*(128.0/125.0));
+			r = (unsigned char)backEvening->pixels[3*(512*q + p)];
+			g = (unsigned char)backEvening->pixels[3*(512*q + p) + 1];
+			b = (unsigned char)backEvening->pixels[3*(512*q + p) + 2];
 			break;
 		}
 	}
