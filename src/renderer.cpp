@@ -132,26 +132,27 @@ void update_local_vars() {
 string formatTime(){
 	string ts;
 	if(time_hr<10){
-		ts="TIME : 0"+to_string(time_hr)+":00 HRS";
+		ts="TIME : 0"+to_string(time_hr)+":00 ";
 	}
 	else{
-		ts="TIME : "+to_string(time_hr)+":00 HRS";
+		ts="TIME : "+to_string(time_hr)+":00 ";
 	}
 	return ts;
 }
 
 string ControlStr[]={
-	"W: MOVE FORWARD",
-	"S: MOVE BACKWARD",
-	"A: MOVE LEFT",
-	"D: MOVE RIGHT",
-	"I: MOVE UP",
-	"J: MOVE DOWN",
-	"T: INC TIME",
-	"SHIFT+T: DEC TIME",
-	"C: TOGGLE INSTRUCTIONS",
-	"F: TOGGLE FULL SCREEN",
-	"ESC: EXIT"
+	"LEFT CLICK: Create Ripple",
+	"W: Move Forward",
+	"S: Move Backward",
+	"A: Move Left",
+	"D: Move Right",
+	"I: Move Up",
+	"J: Move Down",
+	"T: Inc Time",
+	"SHIFT+T: Dec Time",
+	"C: Toggle Instructions",
+	"F: Toggle Fullscreen",
+	"ESC: Exit"
 };
 
 void renderText(void *font,string str,float txt_xoff,float txt_yoff,float rc,float gc,float bc){
@@ -503,6 +504,7 @@ void render_sky() {
 }
 
 void drawScene(){
+	lx = cos(pitch)*sin(yaw); ly = sin(pitch); lz = -cos(pitch)*cos(yaw);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -516,11 +518,12 @@ void drawScene(){
 	precam_y=cam_y;
 	precam_z=cam_z;
 	
-	renderText(GLUT_BITMAP_TIMES_ROMAN_24,formatTime(),-swidth+50.0,sheight-80.0,1.0,0.0,0.0);
+	if(tod==TimeOfDay::Night || tod==TimeOfDay::Evening) renderText(GLUT_BITMAP_9_BY_15,formatTime(),swidth-300.0,sheight-80.0,1.0,1.0,1.0);
+	else renderText(GLUT_BITMAP_9_BY_15,formatTime(),swidth-300.0,sheight-80.0,0.0,0.0,0.0);
 	
 	if(controls){
-		for(int i=0;i<11;i++){
-			renderText(GLUT_BITMAP_HELVETICA_18,ControlStr[i],-swidth+50.0,sheight-140.0-60.0*i,1.0,1.0,1.0);
+		for(int i=0;i<12;i++){
+			renderText(GLUT_BITMAP_9_BY_15,ControlStr[i],-swidth+50.0,sheight-80.0-40.0*i,1.0,1.0,1.0);
 		}
 	}
 
