@@ -25,7 +25,7 @@ void Terrain::loadTerrain(int height) {
 
 			// Tweak shape of lake here & in lake class
 			float h = min((float)0.0,x1*x1+y1*y1-50)+height;
-			this->set_height(x, y, h);
+			this->setHeight(x, y, h);
 		}
 	}
 }
@@ -108,7 +108,7 @@ void Terrain::compute_normals() {
 	normals2.clear();
 }
 
-Vec3f Terrain::get_normal(int x, int z) {
+Vec3f Terrain::getNormal(int x, int z) {
 	return normals[z][x];	
 }
 
@@ -120,10 +120,10 @@ int Terrain::length() {
 	return l;
 }
 
-void Terrain::set_height(int x, int z, float y) {
+void Terrain::setHeight(int x, int z, float y) {
 	hs[z][x] = y;
 }
 
-float Terrain::get_height(int x, int z) {
+float Terrain::getHeight(int x, int z) {
 	return hs[z][x];	
 }

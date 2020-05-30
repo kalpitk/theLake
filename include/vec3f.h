@@ -8,21 +8,21 @@ class Vec3f {
 	public:
 		Vec3f();
 		Vec3f(float x, float y, float z);
-		
+
 		float &operator[](int index);
 		float operator[](int index) const;
-		
+
 		Vec3f operator*(float scale) const;
 		Vec3f operator/(float scale) const;
 		Vec3f operator+(const Vec3f &other) const;
 		Vec3f operator-(const Vec3f &other) const;
 		Vec3f operator-() const;
-		
+
 		const Vec3f &operator*=(float scale);
 		const Vec3f &operator/=(float scale);
 		const Vec3f &operator+=(const Vec3f &other);
 		const Vec3f &operator-=(const Vec3f &other);
-		
+
 		float magnitude() const;
 		float magnitudeSquared() const;
 		Vec3f normalize() const;

@@ -7,7 +7,7 @@
 #include  "../include/renderer.h"
 
 Terrain* _terrain = new Terrain(-25);
-Lake* _lake = new Lake(-26);
+Lake* _lake = new Lake(-50);
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
@@ -15,16 +15,16 @@ int main(int argc, char** argv) {
 	glutInitWindowSize(800, 600);
 	glutCreateWindow("Interactive Lake");
 	initRendering();
-	
+
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(keyboard);
 
 	glutMouseFunc(mouse);
     glutMotionFunc(mouseMove);
-	
-	glutTimerFunc(100,timer,0);
+
+	glutTimerFunc(50,timer,0);
 	glutReshapeFunc(handleResize);
-	
+
 	glutMainLoop();
 	return 0;
 }

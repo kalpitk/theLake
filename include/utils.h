@@ -19,9 +19,7 @@ GLuint loadTexture(Image* image) {
 }
 
 GLuint loadTx(string str) {
-	const char* path = str.c_str();
-	Image* image = loadBMP(path);
-	// cout<<"Pixel1 size : "<<(unsigned int)(*image->pixels)<<endl;
+	Image* image = loadBMP(str.c_str());
 	GLuint tex = loadTexture(image);
 	delete image;
 	return tex;
@@ -46,8 +44,6 @@ void loadImages(){
 
 	topNight = loadBMP("./resources/sky/night.bmp");
 	rightNight = backNight = leftNight = topNight;
-
-	// cout<<"Pixel size : "<<sizeof((topNight->pixels))/sizeof(char)<<endl;
 }
 
 Vec3f colorAtTop(float x, float y, TimeOfDay tod){
@@ -87,7 +83,7 @@ Vec3f colorAtTop(float x, float y, TimeOfDay tod){
 			break;
 		}
 	}
-	return Vec3f((float)r, (float)g, (float)b) + Vec3f(128, 128, 128);
+	return Vec3f((float)r, (float)g, (float)b);
 }
 
 Vec3f colorAtRight(float x, float y, TimeOfDay tod){
@@ -127,7 +123,7 @@ Vec3f colorAtRight(float x, float y, TimeOfDay tod){
 			break;
 		}
 	}
-	return Vec3f((float)r, (float)g, (float)b) + Vec3f(128, 128, 128);
+	return Vec3f((float)r, (float)g, (float)b);
 }
 
 Vec3f colorAtLeft(float x, float y, TimeOfDay tod){
@@ -167,7 +163,7 @@ Vec3f colorAtLeft(float x, float y, TimeOfDay tod){
 			break;
 		}
 	}
-	return Vec3f((float)r, (float)g, (float)b) + Vec3f(128, 128, 128);
+	return Vec3f((float)r, (float)g, (float)b);
 }
 
 Vec3f colorAtBack(float x, float y, TimeOfDay tod){
@@ -207,7 +203,7 @@ Vec3f colorAtBack(float x, float y, TimeOfDay tod){
 			break;
 		}
 	}
-	return Vec3f((float)r, (float)g, (float)b) + Vec3f(128, 128, 128);
+	return Vec3f((float)r, (float)g, (float)b);
 }
 
 Vec3f blendColor(Vec3f color1, float alpha1, Vec3f color2, float alpha2) {

@@ -13,17 +13,17 @@
 
 extern Terrain* _terrain;
 extern Lake* _lake;
+
 float limit=89.0*M_PI/180.0f;
 float yview = zNear*FSCALE*tan(fov/2*M_PI/180.0);
 
-float gtx=0.0,gty=0.0,gtz=0.0;
-
 void lakePoint(int x, float y, int z, Vec3f color) {
-	// get color here from reflection, apply alpha like this
-	if(_lake->is_outside(x, z)) {
+
+	if(_lake->isOutside(x, z)) {
 		glColor4f(0.0f,0.0f,1.0f,0.0f);
 	}
 	else {
+		color += Vec3f(128, 128, 128);
 		Vec3f blendedColor = blendColor(color, 0.9f, Vec3f(0.0, 0.0, 200.0), 0.1f);
 		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 0.8f);
 	}
@@ -41,7 +41,7 @@ void lighting() {
 		case TimeOfDay::Night : {
 			GLfloat ambientColor[] = {0.2f, 0.2f, 0.2f, 1.0f};
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-			
+
 			GLfloat lightColor0[] = {0.3f, 0.3f, 0.3f, 0.1f};
 			GLfloat lightPos0[] = {-0.5f, 0.8f, 0.1f, 0.0f};
 			glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
@@ -53,7 +53,7 @@ void lighting() {
 			float lightOff = (0.2/3.0)*(time_hr - 12);
 			GLfloat ambientColor[] = {0.5f-lightOff, 0.5f-lightOff, 0.6f-lightOff, 1.0f};
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-			
+
 			GLfloat lightColor0[] = {0.6f, 0.6f, 0.6f, 1.0f};
 			GLfloat lightPos0[] = {-0.5f, 0.8f, 0.1f, 0.0f};
 			glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
@@ -65,7 +65,7 @@ void lighting() {
 			float lightOff = (0.5/6.0)*(time_hr - 5);
 			GLfloat ambientColor[] = {0.3f+lightOff, 0.3f+lightOff, 0.4f+lightOff, 1.0f};
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-			
+
 			GLfloat lightColor0[] = {0.4f, 0.4f, 0.5f, 1.0f};
 			GLfloat lightPos0[] = {-0.5f, 0.8f, 0.1f, 0.0f};
 			glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
@@ -77,7 +77,7 @@ void lighting() {
 			float lightOff = (0.1/3.0)*(time_hr - 16);
 			GLfloat ambientColor[] = {0.3f-lightOff, 0.3f-lightOff, 0.4f-lightOff, 1.0f};
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-			
+
 			GLfloat lightColor0[] = {0.6f, 0.6f, 0.6f, 1.0f};
 			GLfloat lightPos0[] = {-0.5f, 0.8f, 0.1f, 0.0f};
 			glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
@@ -88,26 +88,18 @@ void lighting() {
 	}
 }
 
-float precam_x=cam_x,precam_y=cam_y,precam_z=cam_z;
+float precamX=camX,precamY=camY,precamZ=camZ;
 
 void collisionDetection(){
 
-	float fac = 3.0f/5;
-	float tcam_x = cam_x * fac;
-	float tcam_z = cam_z * fac;
+	camX = min(490.0f, camX);
+	camY = min(500.0f, camY);
+	camZ = min(490.0f, camZ);
 
-	if(cam_y<-25)
-		cam_y=-25;
-	if(cam_y>500)
-		cam_y=500;
-	if(cam_x<10)
-		cam_x=10;
-	if(cam_x>490)
-		cam_x=490;
-	if(cam_z<10)
-		cam_z=10;
-	if(cam_z>490)
-		cam_z=490;
+	camX = max(10.0f, camX);
+	camY = max(-25.0f, camY);
+	camZ = max(10.0f, camZ);
+
 }
 
 void update_local_vars() {
@@ -159,20 +151,20 @@ void renderText(void *font,string str,float txt_xoff,float txt_yoff,float rc,flo
 	txt_xoff=txt_xoff/sheight*yview;
 	txt_yoff=txt_yoff/sheight*yview;
 
-	float xoff=cam_x+(zNear+0.0001)*FSCALE*lx+txt_xoff*cos(yaw)-txt_yoff*sin(pitch)*sin(yaw);
-	float yoff=cam_y+(zNear+0.0001)*FSCALE*ly+txt_yoff*cos(pitch);
-	float zoff=cam_z+(zNear+0.0001)*FSCALE*lz+txt_xoff*sin(yaw)+txt_yoff*sin(pitch)*cos(yaw);
-	
+	float xoff=camX+(zNear+0.0001)*FSCALE*lx+txt_xoff*cos(yaw)-txt_yoff*sin(pitch)*sin(yaw);
+	float yoff=camY+(zNear+0.0001)*FSCALE*ly+txt_yoff*cos(pitch);
+	float zoff=camZ+(zNear+0.0001)*FSCALE*lz+txt_xoff*sin(yaw)+txt_yoff*sin(pitch)*cos(yaw);
+
 	glDisable(GL_LIGHTING);
 	glDisable(GL_LIGHT0);
 	glDisable(GL_TEXTURE_2D);
-	
+
 	glColor3f(rc,gc,bc);
 	glRasterPos3f(xoff,yoff,zoff);
 	for (int i=0; i<str.length(); i++) {
 		glutBitmapCharacter(font,str[i]);
 	}
-	
+
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_TEXTURE_2D);
@@ -183,37 +175,37 @@ void keyboard(unsigned char key,int x,int y){
 		case 27 :
 			exit(0);
 		case 'w' :
-			cam_x += lx * speed ;
-			cam_y += ly * speed ;
-			cam_z += lz * speed ;
+			camX += lx * speed ;
+			camY += ly * speed ;
+			camZ += lz * speed ;
 			break;
 		case 's' :
-			cam_x -= lx * speed ;
-			cam_y -= ly * speed ;
-			cam_z -= lz * speed ;
+			camX -= lx * speed ;
+			camY -= ly * speed ;
+			camZ -= lz * speed ;
 			break;
 		case 'a' :
-			cam_x += cos(pitch) * sin(yaw - M_PI_2) * speed ;
-			cam_z += -cos(pitch) * cos(yaw - M_PI_2) * speed ;
+			camX += cos(pitch) * sin(yaw - M_PI_2) * speed ;
+			camZ += -cos(pitch) * cos(yaw - M_PI_2) * speed ;
 			break;
 		case 'd' :
-			cam_x += cos(pitch) * sin(yaw + M_PI_2) * speed ;
-			cam_z += -cos(pitch) * cos(yaw + M_PI_2) * speed ;
+			camX += cos(pitch) * sin(yaw + M_PI_2) * speed ;
+			camZ += -cos(pitch) * cos(yaw + M_PI_2) * speed ;
 			break;
 		case 'i' :
-			cam_y += speed ;
+			camY += speed ;
 			break;
 		case 'j': 
-			cam_y -= speed ;
+			camY -= speed ;
 			break;
 		case 'f':
-			if(!full_screen){
+			if(!fullScreen){
 				glutFullScreen();
-				full_screen=1;
+				fullScreen=1;
 			}
 			else{
 				glutReshapeWindow(800,600);
-				full_screen=0;
+				fullScreen=0;
 			}
 			break;
 		case 't':
@@ -270,7 +262,7 @@ void mouse(int button, int state, int mouseX, int mouseY) {
 void mouseMove(int mouseX, int mouseY) {
 
 	if(!cameraMouseMovement) return;
-	
+
 	if(warped){
 		warped=false;
 		return;
@@ -294,28 +286,28 @@ void mouseMove(int mouseX, int mouseY) {
 void render_points(Vec3f normal,int x,int z) {
 	glNormal3f(FSCALE * (X_OFF +  normal[0]), FSCALE * (Y_OFF +  normal[1]), FSCALE * (Z_OFF +  normal[2]));
 	glTexCoord2f((float)(x)/300,(float)(z)/300);
-	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  _terrain->get_height(x, z)), FSCALE * (Z_OFF +  z));
+	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  _terrain->getHeight(x, z)), FSCALE * (Z_OFF +  z));
 
-	normal = _terrain->get_normal(x, z + 1);
+	normal = _terrain->getNormal(x, z + 1);
 	glNormal3f((X_OFF +  normal[0]), Y_OFF +  normal[1], Z_OFF +  normal[2]);
 	glTexCoord2f((float)(x)/300,(float)(z+1)/300);
-	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  _terrain->get_height(x, z + 1)), FSCALE * (Z_OFF +  (z + 1)));
+	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  _terrain->getHeight(x, z + 1)), FSCALE * (Z_OFF +  (z + 1)));
 }
 
 void render_terrain(GLuint ground_texture) {
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, ground_texture);
-	
+
 	//Bottom
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	
+
 	glColor3f(1.0f, 1.0f, 1.0f);
 	for(int z = 0; z < _terrain->length() - 1; z++) {
 		glBegin(GL_TRIANGLE_STRIP);
 		for(int x = 0; x < _terrain->width(); x++) {
-			Vec3f normal = _terrain->get_normal(x, z);
+			Vec3f normal = _terrain->getNormal(x, z);
 			render_points(normal,x,z);
 		}
 		glEnd();
@@ -324,7 +316,7 @@ void render_terrain(GLuint ground_texture) {
 }
 
 Vec3f calcReflectRay(Vec3f normal, int x, int y, int z){
-	Vec3f cameraPos = Vec3f(cam_x, cam_y, cam_z);
+	Vec3f cameraPos = Vec3f(camX, camY, camZ);
 	Vec3f currPoint = Vec3f((float)x,(float)y,(float)z);
 	Vec3f dir = currPoint - cameraPos;
 	normal = normal/normal.magnitude();
@@ -348,7 +340,7 @@ Vec3f calcColor(Vec3f ray, int x, int y, int z){
 	// if(x==174 && z==209){
 	// 	cout<<"Dir_x : "<<ray[0]<<" Dir_y : "<<ray[1]<<" Dir_z : "<<ray[2]<<endl;
 	// 	cout<<" X : "<<x<<" Y : "<<y<<" Z : "<<z<<endl;
-	// 	cout<<"X_act : "<<x_act<<" Y_act : "<<y_act<<" Z_act : "<<z_act<<endl;	
+	// 	cout<<"X_act : "<<x_act<<" Y_act : "<<y_act<<" Z_act : "<<z_act<<endl;
 	// }
 	if(x_act >= -125 && x_act <= 375 && z_act >= -125 && z_act <= 375) return colorAtTop(x_act + 125.0, 375 - z_act, tod);
 // Intersection with right plane
@@ -401,14 +393,14 @@ Vec3f calcColor(Vec3f ray, int x, int y, int z){
 
 void render_points_lake(Vec3f normal,int x,int z) {
 	glNormal3f(FSCALE * (X_OFF +  normal[0]), FSCALE * (Y_OFF +  normal[1]), FSCALE * (Z_OFF +  normal[2]));
-	int y = _lake->get_height(x, z);
+	int y = _lake->getHeight(x, z);
 	Vec3f colorOff = Vec3f(128.0f,128.0f,128.0f);
 	Vec3f reflectRay = calcReflectRay(normal, x, y, z);
 	Vec3f color = calcColor(reflectRay, x, y, z);
 	lakePoint(x, y, z, color);
 
-	y = _lake->get_height(x, z+1);
-	normal = _lake->get_normal(x, z + 1);
+	y = _lake->getHeight(x, z+1);
+	normal = _lake->getNormal(x, z + 1);
 	glNormal3f((X_OFF +  normal[0]), Y_OFF +  normal[1], Z_OFF +  normal[2]);
 	reflectRay = calcReflectRay(normal, x, y, z+1);
 	color = calcColor(reflectRay, x, y, z+1);
@@ -424,7 +416,7 @@ void render_lake() {
 	for(int z = 0; z < _lake->length() - 1; z++) {
 		glBegin(GL_TRIANGLE_STRIP);
 		for(int x = 0; x < _lake->width(); x++) {
-			Vec3f normal = _lake->get_normal(x, z);
+			Vec3f normal = _lake->getNormal(x, z);
 			render_points_lake(normal,x,z);
 		}
 		glEnd();
@@ -510,17 +502,11 @@ void drawScene(){
 	glLoadIdentity();
 	update_local_vars();
 	collisionDetection();
-	gluLookAt(cam_x,cam_y,cam_z,cam_x+lx,cam_y+ly,cam_z+lz,0.0f,1.0f,0.0f);
+	gluLookAt(camX,camY,camZ,camX+lx,camY+ly,camZ+lz,0.0f,1.0f,0.0f);
 
-	// cout<<cam_x<<' '<<cam_z<<endl;
-	// cout<<precam_x<<" "<<precam_z<<"\n\n";
-	precam_x=cam_x;
-	precam_y=cam_y;
-	precam_z=cam_z;
-	
 	if(tod==TimeOfDay::Night || tod==TimeOfDay::Evening) renderText(GLUT_BITMAP_9_BY_15,formatTime(),swidth-300.0,sheight-80.0,1.0,1.0,1.0);
 	else renderText(GLUT_BITMAP_9_BY_15,formatTime(),swidth-300.0,sheight-80.0,0.0,0.0,0.0);
-	
+
 	if(controls){
 		for(int i=0;i<12;i++){
 			renderText(GLUT_BITMAP_9_BY_15,ControlStr[i],-swidth+50.0,sheight-80.0-40.0*i,1.0,1.0,1.0);
@@ -529,7 +515,7 @@ void drawScene(){
 
 	float scale = 5.0f / max(_terrain->width() - 1, _terrain->length() - 1);
 	glScalef(scale, scale, scale);
-	
+
 	render_sky();
 
 	render_terrain(ground_texture);

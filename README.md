@@ -1,4 +1,4 @@
-# 3d-Lake-Simulator
+# Interactive Lake
 ##### Kalpit Kothari
 ##### Yasasvi V Peruvemba
 ### Instructions to run :

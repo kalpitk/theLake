@@ -18,9 +18,9 @@ class Terrain {
 		~Terrain();
 		void loadTerrain(int height);
 		void compute_normals();
-		Vec3f get_normal(int x, int z);
+		Vec3f getNormal(int x, int z);
 		int width();
 		int length();
-		void set_height(int x, int z, float y);
-		float get_height(int x, int z);
+		void setHeight(int x, int z, float y);
+		float getHeight(int x, int z);
 };

@@ -24,12 +24,12 @@ class Lake {
 		void loadLake();
         void update();
 		void compute_normals();
-		Vec3f get_normal(int x, int z);
-        bool is_outside(int x, int z);
+		Vec3f getNormal(int x, int z);
+        bool isOutside(int x, int z);
 		int width();
 		int length();
-		void set_height(int x, int z, float y);
-		float get_height(int x, int z);
+		void setHeight(int x, int z, float y);
+		float getHeight(int x, int z);
 
 		void addRipple(float x, float z, float amp);
 };
