@@ -1,6 +1,6 @@
 # 3d-Lake-Simulator
-Kalpit Kothari
-Yasasvi V Peruvemba
+##### Kalpit Kothari
+##### Yasasvi V Peruvemba
 ### Instructions to run :
 
 ```shell
