@@ -1,5 +1,4 @@
-#ifndef IMAGE_LOADER_H_INCLUDED
-#define IMAGE_LOADER_H_INCLUDED
+#pragma once
 
 class Image {
 	public:
@@ -11,5 +10,3 @@ class Image {
 };
 
 Image* loadBMP(const char* filename);
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef RIPPLE_H_INCLUDED
-#define RIPPLE_H_INCLUDED
+#pragma once
 
 #include <bits/stdc++.h>
 #include <GL/glut.h>
@@ -22,5 +21,3 @@ class Ripple {
         float waveDistance() const;
         int timeElapsed() const;
 };
-
-#endif

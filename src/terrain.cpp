@@ -1,7 +1,7 @@
-#include<bits/stdc++.h>
-#include  "../include/terrain.h"
-#include  "../include/vec3f.h"
-#include  "../include/imageloader.h"
+#include <bits/stdc++.h>
+#include "../include/terrain.h"
+#include "../include/vec3f.h"
+#include "../include/imageloader.h"
 
 
 using namespace std;
@@ -12,20 +12,16 @@ Terrain::Terrain(int height) {
 }
 
 void Terrain::loadTerrain(int height) {
-
-	float X = 300;
-	float Y = 300;
-
-	this->w =  X;
-	this->l =  Y;
+	this->w =  300;
+	this->l =  300;
 
 	hs = vector<vector<float>>(l, vector<float>(w));
 	normals = vector<vector<Vec3f>>(l, vector<Vec3f>(w));
 	
-	for(int y = 0; y < Y; y++) {
-		for(int x = 0; x < X; x++) {
-			float x1 = 0.1*(X/2.0-x);
-			float y1 = 0.1*(Y/2.0-y);
+	for(int y = 0; y < l; y++) {
+		for(int x = 0; x < w; x++) {
+			float x1 = 0.1*(w/2.0-x);
+			float y1 = 0.1*(l/2.0-y);
 
 			// Tweak shape of lake here & in lake class
 			float h = min((float)0.0,x1*x1+y1*y1-50)+height;

@@ -24,7 +24,7 @@ void lakePoint(int x, float y, int z, Vec3f color) {
 		glColor4f(0.0f,0.0f,1.0f,0.0f);
 	}
 	else {
-		Vec3f blendedColor = blendColor(color, 0.9f, Vec3f(100.0, 100.0, 100.0), 0.1f);
+		Vec3f blendedColor = blendColor(color, 0.9f, Vec3f(0.0, 0.0, 200.0), 0.1f);
 		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 0.8f);
 	}
 	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  y), FSCALE * (Z_OFF +  z));
@@ -37,13 +37,55 @@ void timer(int value) {
 }
 
 void lighting() {
-	GLfloat ambientColor[] = {0.4f, 0.4f, 0.4f, 1.0f};
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-	
-	GLfloat lightColor0[] = {0.6f, 0.6f, 0.6f, 1.0f};
-	GLfloat lightPos0[] = {-0.5f, 0.8f, 0.1f, 0.0f};
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+	switch (tod) {
+		case TimeOfDay::Night : {
+			GLfloat ambientColor[] = {0.2f, 0.2f, 0.2f, 1.0f};
+			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+			
+			GLfloat lightColor0[] = {0.3f, 0.3f, 0.3f, 0.1f};
+			GLfloat lightPos0[] = {-0.5f, 0.8f, 0.1f, 0.0f};
+			glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+			glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+
+			break;
+		}
+		case TimeOfDay::Afternoon : {
+			float lightOff = (0.2/3.0)*(time_hr - 12);
+			GLfloat ambientColor[] = {0.5f-lightOff, 0.5f-lightOff, 0.6f-lightOff, 1.0f};
+			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+			
+			GLfloat lightColor0[] = {0.6f, 0.6f, 0.6f, 1.0f};
+			GLfloat lightPos0[] = {-0.5f, 0.8f, 0.1f, 0.0f};
+			glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+			glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+
+			break;
+		}
+		case TimeOfDay::Morning : {
+			float lightOff = (0.5/6.0)*(time_hr - 5);
+			GLfloat ambientColor[] = {0.3f+lightOff, 0.3f+lightOff, 0.4f+lightOff, 1.0f};
+			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+			
+			GLfloat lightColor0[] = {0.4f, 0.4f, 0.5f, 1.0f};
+			GLfloat lightPos0[] = {-0.5f, 0.8f, 0.1f, 0.0f};
+			glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+			glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+
+			break;
+		}
+		case TimeOfDay::Evening : {
+			float lightOff = (0.1/3.0)*(time_hr - 16);
+			GLfloat ambientColor[] = {0.3f-lightOff, 0.3f-lightOff, 0.4f-lightOff, 1.0f};
+			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+			
+			GLfloat lightColor0[] = {0.6f, 0.6f, 0.6f, 1.0f};
+			GLfloat lightPos0[] = {-0.5f, 0.8f, 0.1f, 0.0f};
+			glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+			glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+
+			break;
+		}
+	}
 }
 
 float precam_x=cam_x,precam_y=cam_y,precam_z=cam_z;
@@ -54,14 +96,6 @@ void collisionDetection(){
 	float tcam_x = cam_x * fac;
 	float tcam_z = cam_z * fac;
 
-	// Collision detection for building
-	// for(auto val: building_coord){
-	// 	if( cam_y<100 && tcam_x>=val[0] && tcam_x<=val[0]+val[2] && tcam_z>=val[1] && tcam_z<=val[1]+val[3]) {
-	// 		cam_x = precam_x;
-	// 		cam_y = precam_y;
-	// 		cam_z = precam_z;
-	// 	}
-	// }
 	if(cam_y<-25)
 		cam_y=-25;
 	if(cam_y>500)
@@ -497,6 +531,7 @@ void drawScene(){
 
 	render_terrain(ground_texture);
 	render_lake();
+
 	glutSwapBuffers();
 
 }

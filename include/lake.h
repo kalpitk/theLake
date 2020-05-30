@@ -1,5 +1,4 @@
-#ifndef LAKE_H_INCLUDED
-#define LAKE_H_INCLUDED
+#pragma once
 
 #include<bits/stdc++.h>
 #include <GL/glut.h>
@@ -34,5 +33,3 @@ class Lake {
 
 		void addRipple(float x, float z, float amp);
 };
-
-#endif

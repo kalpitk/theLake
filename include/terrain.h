@@ -1,5 +1,4 @@
-#ifndef TERRAIN_H_INCLUDED
-#define TERRAIN_H_INCLUDED
+#pragma once
 
 #include<bits/stdc++.h>
 #include <GL/glut.h>
@@ -25,5 +24,3 @@ class Terrain {
 		void set_height(int x, int z, float y);
 		float get_height(int x, int z);
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef VARIABLES_H
-#define VARIABLES_H
+#pragma once
 
 #include "imageloader.h"
 
@@ -50,7 +49,5 @@ enum TimeOfDay {
     Evening,
     Night
 };
-TimeOfDay tod = TimeOfDay::Night;
-int time_hr = 22;
-
-#endif
+TimeOfDay tod = TimeOfDay::Afternoon;
+int time_hr = 15;

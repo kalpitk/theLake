@@ -1,5 +1,4 @@
-#ifndef RENDERER_H_INCLUDED
-#define RENDERER_H_INCLUDED
+#pragma once
 
 void update(int value);
 void drawScene();
@@ -11,5 +10,3 @@ void mouse(int,int,int,int);
 void mouseMove(int,int);
 void timer(int value);
 void cleanup();
-
-#endif

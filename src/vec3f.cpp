@@ -1,5 +1,6 @@
-#include <math.h>
-#include  "../include/vec3f.h"
+#include <bits/stdc++.h>
+#include "../include/vec3f.h"
+
 using namespace std;
 
 Vec3f::Vec3f() {

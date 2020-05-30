@@ -1,7 +1,7 @@
-#include<bits/stdc++.h>
-#include  "../include/lake.h"
-#include  "../include/vec3f.h"
-#include  "../include/imageloader.h"
+#include <bits/stdc++.h>
+#include "../include/lake.h"
+#include "../include/vec3f.h"
+#include "../include/imageloader.h"
 
 
 using namespace std;
