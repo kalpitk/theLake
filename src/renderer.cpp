@@ -23,9 +23,9 @@ void lakePoint(int x, float y, int z, Vec3f color) {
 		glColor4f(0.0f,0.0f,1.0f,0.0f);
 	}
 	else {
-		color += Vec3f(128, 128, 128);
-		Vec3f blendedColor = blendColor(color, 0.9f, Vec3f(0.0, 0.0, 200.0), 0.1f);
-		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 0.8f);
+		// color += Vec3f(128, 128, 128);
+		Vec3f blendedColor = blendColor(color, 1.0f, Vec3f(0.0, 0.0, 200.0), 0.0f);
+		glColor4f(blendedColor[0]/255.0, blendedColor[1]/255.0, blendedColor[2]/255.0, 0.7f);
 	}
 	glVertex3f(FSCALE * (X_OFF +  x), FSCALE * (Y_OFF +  y), FSCALE * (Z_OFF +  z));
 }
@@ -50,7 +50,7 @@ void lighting() {
 			break;
 		}
 		case TimeOfDay::Afternoon : {
-			float lightOff = (0.2/3.0)*(time_hr - 12);
+			float lightOff = (0.2/3.0)*(timeHours - 12);
 			GLfloat ambientColor[] = {0.5f-lightOff, 0.5f-lightOff, 0.6f-lightOff, 1.0f};
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
 
@@ -62,7 +62,7 @@ void lighting() {
 			break;
 		}
 		case TimeOfDay::Morning : {
-			float lightOff = (0.5/6.0)*(time_hr - 5);
+			float lightOff = (0.5/6.0)*(timeHours - 5);
 			GLfloat ambientColor[] = {0.3f+lightOff, 0.3f+lightOff, 0.4f+lightOff, 1.0f};
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
 
@@ -74,7 +74,7 @@ void lighting() {
 			break;
 		}
 		case TimeOfDay::Evening : {
-			float lightOff = (0.1/3.0)*(time_hr - 16);
+			float lightOff = (0.1/3.0)*(timeHours - 16);
 			GLfloat ambientColor[] = {0.3f-lightOff, 0.3f-lightOff, 0.4f-lightOff, 1.0f};
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
 
@@ -103,33 +103,28 @@ void collisionDetection(){
 }
 
 void update_local_vars() {
-	if(time_hr > 4 && time_hr <= 11) {
+	if(timeHours > 4 && timeHours <= 11) {
 		lighting();
 		tod = TimeOfDay::Morning;
 	} 
-	else if (time_hr > 11 && time_hr <= 15) {
+	else if (timeHours > 11 && timeHours <= 15) {
 		lighting();
 		tod = TimeOfDay::Afternoon;
 	} 
-	else if (time_hr > 15 && time_hr <= 19) {
+	else if (timeHours > 15 && timeHours <= 19) {
 		lighting();
 		tod = TimeOfDay::Evening;
 	} 
-	else if ((time_hr > 19 && time_hr<=23) || ((time_hr >=0  && time_hr<=4))){
+	else if ((timeHours > 19 && timeHours<=23) || ((timeHours >=0  && timeHours<=4))){
 		lighting();
 		tod = TimeOfDay::Night;
 	} 
 }
 
 string formatTime(){
-	string ts;
-	if(time_hr<10){
-		ts="TIME : 0"+to_string(time_hr)+":00 ";
-	}
-	else{
-		ts="TIME : "+to_string(time_hr)+":00 ";
-	}
-	return ts;
+	string timeStr = ((timeHours<10) ? "TIME : 0" : "TIME : ") +
+						to_string(timeHours)+":00 ";
+	return timeStr;
 }
 
 string ControlStr[]={
@@ -140,8 +135,8 @@ string ControlStr[]={
 	"D: Move Right",
 	"I: Move Up",
 	"J: Move Down",
+	"R: Dec Time",
 	"T: Inc Time",
-	"SHIFT+T: Dec Time",
 	"C: Toggle Instructions",
 	"F: Toggle Fullscreen",
 	"ESC: Exit"
@@ -175,30 +170,37 @@ void keyboard(unsigned char key,int x,int y){
 		case 27 :
 			exit(0);
 		case 'w' :
+		case 'W' :
 			camX += lx * speed ;
 			camY += ly * speed ;
 			camZ += lz * speed ;
 			break;
 		case 's' :
+		case 'S' :
 			camX -= lx * speed ;
 			camY -= ly * speed ;
 			camZ -= lz * speed ;
 			break;
 		case 'a' :
+		case 'A' :
 			camX += cos(pitch) * sin(yaw - M_PI_2) * speed ;
 			camZ += -cos(pitch) * cos(yaw - M_PI_2) * speed ;
 			break;
 		case 'd' :
+		case 'D' :
 			camX += cos(pitch) * sin(yaw + M_PI_2) * speed ;
 			camZ += -cos(pitch) * cos(yaw + M_PI_2) * speed ;
 			break;
 		case 'i' :
+		case 'I' :
 			camY += speed ;
 			break;
 		case 'j': 
+		case 'J' :
 			camY -= speed ;
 			break;
 		case 'f':
+		case 'F' :
 			if(!fullScreen){
 				glutFullScreen();
 				fullScreen=1;
@@ -209,12 +211,15 @@ void keyboard(unsigned char key,int x,int y){
 			}
 			break;
 		case 't':
-			time_hr=(time_hr+1)%24;
+		case 'T' :
+			timeHours=(timeHours+1)%24;
 			break;
-		case 'T':
-			time_hr=(time_hr+23)%24;
+		case 'r':
+		case 'R' :
+			timeHours=(timeHours+23)%24;
 			break;
 		case 'c':
+		case 'C' :
 			controls=!controls;
 	}
 	glutPostRedisplay();
@@ -254,7 +259,10 @@ void mouse(int button, int state, int mouseX, int mouseY) {
 			posY = posY / FSCALE - Y_OFF;
 			posZ = posZ / FSCALE - Z_OFF;
 
-			_lake->addRipple(posX, posZ, 1);
+			// Prevent clicks on top skybox
+			// from trigerring ripples
+			if(posY < 300)
+				_lake->addRipple(posX, posZ, 1);
 		}
 	}
 }
@@ -337,12 +345,9 @@ Vec3f calcColor(Vec3f ray, int x, int y, int z){
 	x_act/=FSCALE;
 	z_act/=FSCALE;
 	y_act/=FSCALE;
-	// if(x==174 && z==209){
-	// 	cout<<"Dir_x : "<<ray[0]<<" Dir_y : "<<ray[1]<<" Dir_z : "<<ray[2]<<endl;
-	// 	cout<<" X : "<<x<<" Y : "<<y<<" Z : "<<z<<endl;
-	// 	cout<<"X_act : "<<x_act<<" Y_act : "<<y_act<<" Z_act : "<<z_act<<endl;
-	// }
+
 	if(x_act >= -125 && x_act <= 375 && z_act >= -125 && z_act <= 375) return colorAtTop(x_act + 125.0, 375 - z_act, tod);
+
 // Intersection with right plane
 	x_act = 375*FSCALE;
 	k = (float)(x - x_act)/(float)ray[0];
@@ -383,11 +388,6 @@ Vec3f calcColor(Vec3f ray, int x, int y, int z){
 	y_act/=FSCALE;
 	if(y_act >= -125 && y_act <= 375 && x_act >= -125 && x_act <= 375) return colorAtBack(375.0 - x_act, y_act + 125.0, tod);
 
-	// x = x/FSCALE;
-	// y = y/FSCALE;
-	// z = z/FSCALE;
-	// cout<<"# x : "<<x<<" z : "<<z<<endl;
-
 	return colorAtTop(100, 100, tod);
 }
 
@@ -409,7 +409,6 @@ void render_points_lake(Vec3f normal,int x,int z) {
 
 void render_lake() {
 
-	// For Blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -424,18 +423,6 @@ void render_lake() {
 
 	glDisable(GL_BLEND);
 }
-
-Vec3f ver[8] = 
-{
-    {-100.0,-100.0,100.0},
-    {-100.0,100.0,100.0},
-    {100.0,100.0,100.0},
-    {100.0,-100.0,100.0},
-    {-100.0,-100.0,-100.0},
-    {-100.0,100.0,-100.0},
-    {100.0,100.0,-100.0},
-    {100.0,-100.0,-100.0},
-};
 
 void quad(int a,int b,int c,int d, GLuint building_texture, Vec3f offset,vector<Vec3f> vertices, float scale){
 	Vec3f goff = Vec3f(-25,-25,-25);

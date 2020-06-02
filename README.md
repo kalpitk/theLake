@@ -11,9 +11,9 @@ make run
 
 * C++
 * Glut (OpenGL)
-* Textures
+* GLSL
 
-### Features :
+### Concepts
 
 * Terrains
 * Textures
@@ -27,5 +27,8 @@ make run
 * Ripple Creation
 * Reflection on Water Surface
 
-### Screenshots
+### Features
 
+- Ripple
+- Reflection
+- Transitions with Time

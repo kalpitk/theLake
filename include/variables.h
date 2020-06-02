@@ -50,4 +50,4 @@ enum TimeOfDay {
     Night
 };
 TimeOfDay tod = TimeOfDay::Afternoon;
-int time_hr = 15;
+int timeHours = 15;

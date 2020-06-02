@@ -142,6 +142,7 @@ Vec3f Lake::getNormal(int x, int z) {
 }
 
 bool Lake::isOutside(int x, int z) {
+	if(x<0 || z<0 || x>=w || z>=l) return true;
     return isOut[x][z];
 }
 
