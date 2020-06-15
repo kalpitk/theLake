@@ -29,7 +29,7 @@ bool Ripple::operator<(const Ripple& t) const {
 }
 
 float Ripple::waveDistance() const {
-    return timeElapsed()*0.020;
+    return timeElapsed()*0.025;
 }
 
 inline int Ripple::timeElapsed() const {

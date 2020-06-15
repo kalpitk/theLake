@@ -21,7 +21,7 @@ Lake::Lake(int height) {
 			float y1 = 0.1*(l/2.0-y);
 
 			// Tweak shape of lake here & in terrain class
-			float h = x1*x1+y1*y1-50;
+			float h = x1*x1+y1*y1-100;
             isOut[x][y] = (h>=0);
 		}
 	}
@@ -33,7 +33,7 @@ void Lake::update() {
 
 	// Remove ripples from set that are out of scope
 	for(auto it = ripples.begin(); it != ripples.end();) {
-		if((*it).waveDistance() > 150) {
+		if((*it).waveDistance() > 200) {
 			ripples.erase(it++);
 		}
 		else {

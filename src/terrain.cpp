@@ -24,7 +24,7 @@ void Terrain::loadTerrain(int height) {
 			float y1 = 0.1*(l/2.0-y);
 
 			// Tweak shape of lake here & in lake class
-			float h = min((float)0.0,x1*x1+y1*y1-50)+height;
+			float h = min((float)0.0,x1*x1+y1*y1-100)+height;
 			this->setHeight(x, y, h);
 		}
 	}
