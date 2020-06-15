@@ -262,7 +262,7 @@ void mouse(int button, int state, int mouseX, int mouseY) {
 			// Prevent clicks on top skybox
 			// from trigerring ripples
 			if(posY < 300)
-				_lake->addRipple(posX, posZ, 1);
+				_lake->addRipple(posX, posZ, 2);
 		}
 	}
 }

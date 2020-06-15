@@ -12,7 +12,7 @@ Ripple::Ripple(float x, float z, float amp) {
     this->z = z;
     this->amp = amp;
     this->startTime = system_clock::now().time_since_epoch() / milliseconds(1);
-    this->waveRadius = 1;
+    this->waveRadius = 2;
 }
 
 bool Ripple::operator<(const Ripple& t) const {
@@ -29,7 +29,7 @@ bool Ripple::operator<(const Ripple& t) const {
 }
 
 float Ripple::waveDistance() const {
-    return timeElapsed()*0.035;
+    return timeElapsed()*0.020;
 }
 
 inline int Ripple::timeElapsed() const {
@@ -45,7 +45,7 @@ float Ripple::getAmp(float x, float z) {
     float waveDist = waveDistance();
     if(dist > waveDist + 2*waveRadius || dist < waveDist - 2*waveRadius) return 0.0f;
 
-    float amplitude = amp*pow(0.9, timeSpent*0.001)*(sqrt(sq(waveRadius) - sq(abs(dist-waveDist) - waveRadius))/waveRadius);
+    float amplitude = amp*pow(0.9, timeSpent*0.01)*(sqrt(sq(waveRadius) - sq(abs(dist-waveDist) - waveRadius))/waveRadius);
 
     if(dist < waveDist) amplitude *= -1;
 
