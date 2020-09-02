@@ -1,10 +1,10 @@
 #include<bits/stdc++.h>
 #include <GL/glut.h>
-#include  "../include/vec3f.h"
-#include  "../include/terrain.h"
-#include  "../include/lake.h"
-#include  "../include/imageloader.h"
-#include  "../include/renderer.h"
+#include  "../include/vec3f.hpp"
+#include  "../include/terrain.hpp"
+#include  "../include/lake.hpp"
+#include  "../include/imageloader.hpp"
+#include  "../include/renderer.hpp"
 
 Terrain* _terrain = new Terrain(-25);
 Lake* _lake = new Lake(-26);

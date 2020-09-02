@@ -1,15 +1,13 @@
-#define STB_IMAGE_IMPLEMENTATION
-
 #include <GL/glut.h>
 #include <bits/stdc++.h>
-#include "../include/variables.h"
-#include "../include/vec3f.h"
-#include "../include/renderer.h"
-#include "../include/terrain.h"
-#include "../include/lake.h"
-#include "../include/imageloader.h"
-#include "../include/utils.h"
-#include "../include/objects.h"
+#include "../include/variables.hpp"
+#include "../include/vec3f.hpp"
+#include "../include/renderer.hpp"
+#include "../include/terrain.hpp"
+#include "../include/lake.hpp"
+#include "../include/imageloader.hpp"
+#include "../include/utils.hpp"
+#include "../include/objects.hpp"
 
 extern Terrain* _terrain;
 extern Lake* _lake;

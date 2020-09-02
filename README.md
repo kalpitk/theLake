@@ -1,6 +1,11 @@
 # Interactive Lake
-##### Kalpit Kothari
-##### Yasasvi V Peruvemba
+
+Course Project: Computer Graphics
+
+#### Authors:
+- Kalpit Kothari
+- Yasasvi V Peruvemba
+
 ### Instructions to run :
 
 ```shell
@@ -11,7 +16,6 @@ make run
 
 * C++
 * Glut (OpenGL)
-* GLSL
 
 ### Concepts
 
@@ -32,3 +36,7 @@ make run
 - Ripple
 - Reflection
 - Transitions with Time
+
+### Dependency
+
+- freeglut3-dev

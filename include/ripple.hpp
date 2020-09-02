@@ -2,7 +2,7 @@
 
 #include <bits/stdc++.h>
 #include <GL/glut.h>
-#include "vec3f.h"
+#include "vec3f.hpp"
 
 using namespace std;
 

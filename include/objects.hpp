@@ -1,9 +1,7 @@
 #include <bits/stdc++.h>
-#include "../include/vec3f.h"
+#include "../include/vec3f.hpp"
 
 using namespace std;
-
-#define PI 3.1415927
 
 vector<Vec3f> constructSky(float l, float b, float h) {
 	vector<Vec3f> t = {

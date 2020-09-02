@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
-#include "../include/ripple.h"
-#include "../include/vec3f.h"
+#include "../include/ripple.hpp"
+#include "../include/vec3f.hpp"
 
 #define sq(x) (x)*(x)
 

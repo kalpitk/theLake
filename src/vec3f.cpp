@@ -1,11 +1,9 @@
 #include <bits/stdc++.h>
-#include "../include/vec3f.h"
+#include "../include/vec3f.hpp"
 
 using namespace std;
 
-Vec3f::Vec3f() {
-	
-}
+Vec3f::Vec3f() {}
 
 Vec3f::Vec3f(float x, float y, float z) {
 	v[0] = x;

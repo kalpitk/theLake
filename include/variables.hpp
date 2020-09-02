@@ -1,6 +1,6 @@
 #pragma once
 
-#include "imageloader.h"
+#include "imageloader.hpp"
 
 // Model Variables
 float FSCALE = 100.0f; 

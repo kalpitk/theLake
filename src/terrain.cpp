@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
-#include "../include/terrain.h"
-#include "../include/vec3f.h"
-#include "../include/imageloader.h"
+#include "../include/terrain.hpp"
+#include "../include/vec3f.hpp"
+#include "../include/imageloader.hpp"
 
 
 using namespace std;

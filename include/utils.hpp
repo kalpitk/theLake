@@ -1,6 +1,6 @@
 #include <GL/glut.h>
-#include "../include/imageloader.h"
-#include "../include/vec3f.h"
+#include "../include/imageloader.hpp"
+#include "../include/vec3f.hpp"
 
 GLuint loadTexture(Image* image) {
 	GLuint textureId;
